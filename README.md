@@ -7,4 +7,4 @@
 
 # 如何订阅更新？
 
-![微信订阅](./images/wechat.png)
+![微信订阅](./images/wechat-qrcode.png)

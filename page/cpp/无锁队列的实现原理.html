@@ -4,21 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C++ 高性能编程之无锁队列的实现原理</title>
-    <style>
-      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.7;margin:24px;}
-      pre{background:#0b1020;color:#e6edf3;padding:12px;border-radius:10px;overflow:auto;}
-      code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;}
-      a{color:#2563eb;text-decoration:none;}
-      a:hover{text-decoration:underline;}
-      img{max-width:100%;height:auto;}
-      table{border-collapse:collapse;}
-      th,td{border:1px solid #d1d5db;padding:6px 10px;}
-      th{background:#f9fafb;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/article.css">
 </head>
 <body>
     <article>
-      <h1 style="margin-top:0">C++ 高性能编程之无锁队列的实现原理</h1>
+      <h1>C++ 高性能编程之无锁队列的实现原理</h1>
       <p>无锁队列不用互斥锁，靠"原子操作"和"内存序"让多线程安全地入队、出队。实现方式可以从两个维度看：<strong>并发模型</strong>（谁在生产、谁在消费）和<strong>同步机制</strong>（用哪种原子原语）。下面按这两条线捋一遍，最后给一个 SPSC + 原子 load/store 的简单例子。</p>
 <hr />
 <h2>一、按并发模型分</h2>

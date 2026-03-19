@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 import re
 import shutil
 from pathlib import Path
@@ -42,46 +41,48 @@ def convert_one(md_path: Path, out_html_path: Path) -> None:
     )
 
     out_html_path.parent.mkdir(parents=True, exist_ok=True)
-    out_html_path.write_text(
-        "\n".join(
-            [
-                "<!DOCTYPE html>",
-                "<html>",
-                "<head>",
-                '    <meta charset="UTF-8">',
-                '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
-                f"    <title>{title}</title>",
-                "    <style>",
-                "      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.7;margin:24px;}",
-                "      pre{background:#0b1020;color:#e6edf3;padding:12px;border-radius:10px;overflow:auto;}",
-                "      code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;}",
-                "      a{color:#2563eb;text-decoration:none;}",
-                "      a:hover{text-decoration:underline;}",
-                "      img{max-width:100%;height:auto;}",
-                "      table{border-collapse:collapse;}",
-                "      th,td{border:1px solid #d1d5db;padding:6px 10px;}",
-                "      th{background:#f9fafb;}",
-                "    </style>",
-                "</head>",
-                "<body>",
-                f"    <article>",
-                f"      <h1 style=\"margin-top:0\">{title}</h1>",
-                f"      {html_body}",
-                f"    </article>",
-                "</body>",
-                "</html>",
-                "",
-            ]
-        ),
-        encoding="utf-8",
+    page = "\n".join(
+        [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            '    <meta charset="UTF-8">',
+            '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+            f"    <title>{title}</title>",
+            "    <style>",
+            "      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.7;margin:24px;}",
+            "      pre{background:#0b1020;color:#e6edf3;padding:12px;border-radius:10px;overflow:auto;}",
+            "      code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;}",
+            "      a{color:#2563eb;text-decoration:none;}",
+            "      a:hover{text-decoration:underline;}",
+            "      img{max-width:100%;height:auto;}",
+            "      table{border-collapse:collapse;}",
+            "      th,td{border:1px solid #d1d5db;padding:6px 10px;}",
+            "      th{background:#f9fafb;}",
+            "    </style>",
+            "</head>",
+            "<body>",
+            f"    <article>",
+            f"      <h1 style=\"margin-top:0\">{title}</h1>",
+            f"      {html_body}",
+            f"    </article>",
+            "</body>",
+            "</html>",
+            "",
+        ]
     )
+    out_html_path.write_text(page, encoding="utf-8")
 
 
 def main() -> None:
     categories = ["cpp", "golang", "tech-arch"]
     for cat in categories:
-        in_dir = ROOT / cat
-        out_dir = ROOT / "web" / cat
+        # cpp/golang sources moved under ./content
+        if cat in ("cpp", "golang"):
+            in_dir = ROOT / "content" / cat
+        else:
+            in_dir = ROOT / cat
+        out_dir = ROOT / "page" / cat
         out_dir.mkdir(parents=True, exist_ok=True)
 
         md_files = sorted(in_dir.glob("*.md"))
@@ -97,14 +98,6 @@ def main() -> None:
                 if assets_out.exists():
                     shutil.rmtree(assets_out)
                 shutil.copytree(assets_in, assets_out)
-
-    # Also convert README so `index.html` can link to HTML only.
-    if os.environ.get("SKIP_README") != "1":
-        readme_md = ROOT / "README.md"
-        if readme_md.exists():
-            out_html = ROOT / "web" / "README.html"
-            convert_one(readme_md, out_html)
-
 
 if __name__ == "__main__":
     main()

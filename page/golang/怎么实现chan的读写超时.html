@@ -4,21 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Go 中怎么实现 chan 读写超时？</title>
-    <style>
-      body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.7;margin:24px;}
-      pre{background:#0b1020;color:#e6edf3;padding:12px;border-radius:10px;overflow:auto;}
-      code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;}
-      a{color:#2563eb;text-decoration:none;}
-      a:hover{text-decoration:underline;}
-      img{max-width:100%;height:auto;}
-      table{border-collapse:collapse;}
-      th,td{border:1px solid #d1d5db;padding:6px 10px;}
-      th{background:#f9fafb;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/article.css">
 </head>
 <body>
     <article>
-      <h1 style="margin-top:0">Go 中怎么实现 chan 读写超时？</h1>
+      <h1>Go 中怎么实现 chan 读写超时？</h1>
       <p>Go 的 chan 读写默认是阻塞的：没有数据时读会一直等，缓冲区满时写也会一直等。</p>
 <p>实际业务里往往需要“等一会儿就放弃”，也就是带超时的读写。</p>
 <p>做法就是用 <code>select</code>：在“正常读写”和“超时”两个分支里二选一，谁先满足就执行谁。</p>

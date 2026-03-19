@@ -1,30 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>os-artificer 技术圈</title>
+    <link rel="stylesheet" href="./style/main.css">
+    <link rel="stylesheet" href="./style/article.css">
 </head>
+
 <body>
-    <h2>文章索引（按语言分类）</h2>
-    <h3>C++</h3>
-    <ul>
-        <li><a href="./web/cpp/枚举类型的特点及用法.html">C++ 枚举类型：特点、用法与注意事项</a></li>
-        <li><a href="./web/cpp/无锁队列的实现原理.html">C++ 高性能编程之无锁队列的实现原理</a></li>
-        <li><a href="./web/cpp/限制继承的方法有哪些.html">C++ 各版本"限制继承"都有哪些招？</a></li>
-        <li><a href="./web/cpp/匿名namespace有什么作用.html">C++ 匿名 namespace 有什么作用？</a></li>
-    </ul>
+    <div id="app">
+        <nav class="nav" aria-label="文章导航">
+            <h2>文章索引</h2>
 
-    <h3>Go</h3>
-    <ul>
-        <li><a href="./web/golang/怎么实现chan的读写超时.html">Go 中怎么实现 chan 读写超时？</a></li>
-    </ul>
+            <details
+                v-for="cat in categories"
+                :key="cat.key"
+                class="nav-group"
+                :open="cat.open"
+                @toggle="onToggle(cat, $event)"
+            >
+                <summary :class="cat.summaryClass">{{ cat.title }}</summary>
+                <ul>
+                    <li v-for="it in cat.items" :key="it.href">
+                        <a
+                            :href="it.href"
+                            target="article"
+                            :class="{ active: activeHref === it.href }"
+                            @click.prevent="openArticle(it.href)"
+                        >
+                            {{ it.text }}
+                        </a>
+                    </li>
+                </ul>
+            </details>
 
-    <h3>技术架构（Tech-Arch）</h3>
-    <ul>
-        <li><a href="./web/tech-arch/A2A-proto.html">什么是 A2A？</a></li>
-        <li><a href="./web/tech-arch/数据库选型方案.html">2026 数据库选型指南：从 OLTP 到时序一网打尽</a></li>
-    </ul>
+            <div class="nav-footer">
+                欢迎关注订阅公众号：os-artificer 技术圈
+            </div>
 
-    <h3>欢迎关注订阅公众号：os-artificer 技术圈</h3>
+        <div class="nav-qr">
+            <picture>
+                <source srcset="./images/wechat-qrcode.webp" type="image/webp">
+                <img
+                    src="./images/wechat-qrcode.png"
+                    alt="公众号二维码"
+                    decoding="async"
+                />
+            </picture>
+        </div>
+        </nav>
+
+        <main class="main">
+            <div id="article" aria-live="polite"></div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="./script/app.js"></script>
 </body>
+
 </html>
