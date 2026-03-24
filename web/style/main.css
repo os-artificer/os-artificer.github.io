@@ -338,15 +338,6 @@ body {
     scrollbar-width: thin;
 }
 
-/*
- * 左列宽度需与「GitHub」行对齐，「邮箱」两字较短，格内右侧会留空。
- * 负边距把地址向左移入这段空隙，缩短与「邮箱」的间距，同时略增可用宽度。
- */
-.nav-contact__row--email .nav-contact__email-wrap {
-    margin-left: -1.35rem;
-    width: calc(100% + 1.35rem);
-}
-
 .nav-contact__link--email {
     display: inline-block;
     box-sizing: border-box;
